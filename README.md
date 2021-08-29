@@ -2,9 +2,34 @@
 
 This bundle add History management for entities.
 
+## Requirements
+Symfony ``^2.8``
+
+PHP ``^5.6``
+
 ## Install
+### Composer
 ```shell
-composer require XXXXXXXXXXXX
+composer require atournayre/historique-bundle
+```
+### Register bundle
+```php
+// app/AppKernel.php
+
+// ...
+class AppKernel extends Kernel
+{
+    // ...
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
+            new \Atournayre\Bundle\HistoriqueBundle\HistoriqueBundle(),
+            // ...
+        );
+    }
+    // ...
+}
 ```
 
 ## Configuration
