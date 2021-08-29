@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="atournayre.history_bundle.serializer" class="Atournayre\Bundle\HistoriqueBundle\Service\Serializer"/>
+
+        <service id="atournayre.history_bundle.history_factory" class="Atournayre\Bundle\HistoriqueBundle\Factory\HistoryFactory">
+            <argument id="atournayre.history_bundle.serializer" type="service"/>
+            <argument id="Atournayre\Bundle\HistoriqueBundle\Entity\History" type="string" />
+            <argument id="security.token_storage" type="service" />
+        </service>
+
+        <service id="atournayre.history_bundle.history_event_subscriber" class="Atournayre\Bundle\HistoriqueBundle\EventSubscriber\HistoryEventSubscriber">
+            <argument id="doctrine.orm.entity_manager" type="service"/>
+            <argument type="service" id="atournayre.history_bundle.history_factory"/>
+            <tag name="doctrine.event_listener" event="onFlush"/>
+        </service>
+    </services>
+
+</container>

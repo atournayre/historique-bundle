@@ -1,0 +1,32 @@
+{
+    "name": "atournayre/historique-bundle",
+    "description": "This bundle add History management for entities.",
+    "type": "symfony-bundle",
+    "license": [ "MIT" ],
+    "authors": [
+        {
+            "name": "atournayre",
+            "email": "aurelien.tournayre@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Atournayre\\Bundle\\HistoriqueBundle\\": ""
+        }
+    },
+    "require": {
+        "php": ">=5.6",
+        "symfony/config": "^2.8",
+        "symfony/dependency-injection": "^2.8",
+        "doctrine/orm": "^2.9",
+        "symfony/security-bundle": "^2.8",
+        "doctrine/common": "^3.1",
+        "symfony/serializer": "^2.8"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "2.8.*"
+        }
+    }
+}
