@@ -4,35 +4,21 @@ namespace Atournayre\Bundle\HistoriqueBundle\Factory;
 
 use Atournayre\Bundle\HistoriqueBundle\Interfaces\History as HistoryInterface;
 use Atournayre\Bundle\HistoriqueBundle\Service\Serializer;
+use DateTime;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class HistoryFactory
 {
     /**
-     * @var Serializer
-     */
-    private $serializer;
-
-    /**
-     * @var string
-     */
-    private $historyClassName;
-
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    /**
      * @param Serializer            $serializer
      * @param string                $historyClassName The fully qualified class name or the History entity.
      * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct(Serializer $serializer, $historyClassName, TokenStorageInterface $tokenStorage)
-    {
-        $this->serializer = $serializer;
-        $this->historyClassName = $historyClassName;
-        $this->tokenStorage = $tokenStorage;
+    public function __construct(
+        private readonly Serializer            $serializer,
+        private readonly string                $historyClassName,
+        private readonly TokenStorageInterface $tokenStorage
+    ) {
     }
 
     /**
@@ -40,15 +26,15 @@ class HistoryFactory
      *
      * @return HistoryInterface
      */
-    public function creer(array $changeSet)
+    public function creer(array $changeSet): HistoryInterface
     {
         $entityChangeSet = $this->serializer->serialize($changeSet);
 
         $fqdnHistory = $this->historyClassName;
 
-        return (new $fqdnHistory() )
+        return (new $fqdnHistory())
             ->setBy($this->tokenStorage->getToken()->getUser())
-            ->setAt(new \DateTime())
+            ->setAt(new DateTime())
             ->setEntityChangeSet($entityChangeSet);
     }
 }

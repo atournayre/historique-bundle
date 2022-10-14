@@ -10,30 +10,27 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait HistorycableTrait
 {
-    /**
-     * @var History[]|Collection
-     * @ORM\ManyToMany(targetEntity="Atournayre\Bundle\HistoriqueBundle\Interfaces\History", cascade={"persist"})
-     * @ORM\JoinTable(
-     *     inverseJoinColumns={@ORM\JoinColumn(referencedColumnName="id")},
-     *     joinColumns={@ORM\JoinColumn(referencedColumnName="id")},
-     * )
-     */
-    private $histories;
+    #[ORM\ManyToMany(targetEntity: HistoryInterface::class, cascade: ['persist'])]
+    #[ORM\JoinTable(
+        inverseJoinColumns: [new ORM\JoinColumn(name: "id")],
+        joinColumns: [new ORM\JoinColumn(name: "id")],
+    )]
+    private array|Collection $histories;
 
     /**
      * @return History[]|Collection
      */
-    public function getHistories()
+    public function getHistories(): Collection|array
     {
         return $this->histories;
     }
 
     /**
-     * @param History[]|Collection $histories
+     * @param Collection|History[] $histories
      *
      * @return $this
      */
-    public function setHistories($histories)
+    public function setHistories(Collection|array $histories): self
     {
         $this->histories = $histories;
         return $this;
@@ -44,7 +41,7 @@ trait HistorycableTrait
      *
      * @return $this
      */
-    public function addHistory(HistoryInterface $history)
+    public function addHistory(HistoryInterface $history): self
     {
         $this->histories[] = $history;
 
@@ -56,7 +53,7 @@ trait HistorycableTrait
      *
      * @return array
      */
-    public function getAllPreviousValues($sort = Criteria::DESC)
+    public function getAllPreviousValues($sort = Criteria::DESC): array
     {
         $previousValues = [];
         foreach ($this->histories->toArray() as $history) {
@@ -71,7 +68,7 @@ trait HistorycableTrait
      *
      * @return array
      */
-    public function getAllPreviousValuesByName($fieldName, $sort = Criteria::DESC)
+    public function getAllPreviousValuesByName(string $fieldName, $sort = Criteria::DESC): array
     {
         $previousValues = [];
         foreach ($this->histories->toArray() as $history) {
@@ -83,7 +80,7 @@ trait HistorycableTrait
     /**
      * @return HistoryInterface
      */
-    public function getLastValues()
+    public function getLastValues(): HistoryInterface
     {
         return $this->histories
             ->last()
@@ -95,7 +92,7 @@ trait HistorycableTrait
      *
      * @return mixed
      */
-    public function getLastValuesByName($fieldName)
+    public function getLastValuesByName(string $fieldName): mixed
     {
         return $this->histories
             ->last()
@@ -108,7 +105,7 @@ trait HistorycableTrait
      *
      * @return array
      */
-    private function sortPreviousValues(array $previousValues, $sort = Criteria::DESC)
+    private function sortPreviousValues(array $previousValues, $sort = Criteria::DESC): array
     {
         $sort === Criteria::DESC
             ? krsort($previousValues)

@@ -6,49 +6,24 @@ use DateTimeInterface;
 
 interface History
 {
-    /**
-     * @return int
-     */
-    public function getId();
+    public function getId(): int;
 
-    /**
-     * @return string
-     */
-    public function getEntityChangeSet();
+    public function getEntityChangeSet(): string;
 
-    /**
-     * @param string $entityChangeSet
-     *
-     * @return string
-     */
-    public function setEntityChangeSet($entityChangeSet);
+    public function setEntityChangeSet(string $entityChangeSet): string;
 
-    /**
-     * @return array
-     */
-    public function getEntityChangeSetAsArray();
+    public function getEntityChangeSetAsArray(): array;
 
-    /**
-     * @return array
-     */
-    public function getPreviousValues();
+    public function getPreviousValues(): array;
 
     /**
      * @param string $fieldName The name of the property to retrieve in previous value.
      *
      * @return array
      */
-    public function getPreviousValueByName($fieldName);
+    public function getPreviousValueByName(string $fieldName): array;
 
-    /**
-     * @return DateTimeInterface
-     */
-    public function getAt();
+    public function getAt(): DateTimeInterface;
 
-    /**
-     * @param DateTimeInterface $at
-     *
-     * @return self
-     */
-    public function setAt(DateTimeInterface $at);
+    public function setAt(DateTimeInterface $at): self;
 }

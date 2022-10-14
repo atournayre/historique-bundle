@@ -7,44 +7,30 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Atournayre\Bundle\HistoriqueBundle\Interfaces\History as HistoryInterface;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="history")
- * @ORM\InheritanceType("SINGLE_TABLE")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'history')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
 class History implements HistoryInterface
 {
-    /**
-     * @var int
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected int $id;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=false)
-     */
-    protected $entityChangeSet;
+    #[ORM\Column(type: 'text', nullable: false)]
+    protected string $entityChangeSet;
 
-    /**
-     * @var DateTimeInterface
-     * @ORM\Column(type="datetime", nullable=false)
-     */
-    protected $at;
+    #[ORM\Column(type: 'datetime', nullable: false)]
+    protected DateTimeInterface $at;
 
-    /**
-     * @var UserInterface
-     * @ORM\ManyToOne(targetEntity="Symfony\Component\Security\Core\User\UserInterface")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    protected $by;
+    #[ORM\ManyToOne(targetEntity: UserInterface::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    protected UserInterface $by;
 
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -52,7 +38,7 @@ class History implements HistoryInterface
     /**
      * @return string
      */
-    public function getEntityChangeSet()
+    public function getEntityChangeSet(): string
     {
         return $this->entityChangeSet;
     }
@@ -60,7 +46,7 @@ class History implements HistoryInterface
     /**
      * @return array
      */
-    public function getEntityChangeSetAsArray()
+    public function getEntityChangeSetAsArray(): array
     {
         return json_decode($this->entityChangeSet, JSON_OBJECT_AS_ARRAY);
     }
@@ -68,7 +54,7 @@ class History implements HistoryInterface
     /**
      * @return array
      */
-    public function getPreviousValues()
+    public function getPreviousValues(): array
     {
         $entityChangeSetAsArray = $this->getEntityChangeSetAsArray();
         $previousValues = [];
@@ -79,10 +65,7 @@ class History implements HistoryInterface
         return $this->decoratePreviousValues($previousValues, $timestamp);
     }
 
-    /**
-     * @return array
-     */
-    public function getPreviousValueByName($fieldName)
+    public function getPreviousValueByName(string $fieldName): array
     {
         $entityChangeSetAsArray = $this->getEntityChangeSetAsArray();
         $previousValues = [];
@@ -100,7 +83,7 @@ class History implements HistoryInterface
      *
      * @return $this
      */
-    public function setEntityChangeSet($entityChangeSet)
+    public function setEntityChangeSet(string $entityChangeSet): static
     {
         $this->entityChangeSet = $entityChangeSet;
         return $this;
@@ -109,7 +92,7 @@ class History implements HistoryInterface
     /**
      * @return DateTimeInterface
      */
-    public function getAt()
+    public function getAt(): DateTimeInterface
     {
         return $this->at;
     }
@@ -119,7 +102,7 @@ class History implements HistoryInterface
      *
      * @return $this
      */
-    public function setAt(DateTimeInterface $at)
+    public function setAt(DateTimeInterface $at): static
     {
         $this->at = $at;
         return $this;
@@ -128,7 +111,7 @@ class History implements HistoryInterface
     /**
      * @return UserInterface
      */
-    public function getBy()
+    public function getBy(): UserInterface
     {
         return $this->by;
     }
@@ -138,7 +121,7 @@ class History implements HistoryInterface
      *
      * @return $this
      */
-    public function setBy(UserInterface $by)
+    public function setBy(UserInterface $by): static
     {
         $this->by = $by;
         return $this;
@@ -150,7 +133,7 @@ class History implements HistoryInterface
      *
      * @return array
      */
-    private function decoratePreviousValues(array $previousValues, $timestamp = null)
+    private function decoratePreviousValues(array $previousValues, int $timestamp = null): array
     {
         if (array_key_exists($timestamp, $previousValues)) {
             $previousValues[$timestamp]['_updatedAt'] = $this->at;

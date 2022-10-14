@@ -8,10 +8,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class Serializer
 {
-    /**
-     * @var \Symfony\Component\Serializer\Serializer
-     */
-    private $serializer;
+    private \Symfony\Component\Serializer\Serializer $serializer;
 
     public function __construct()
     {
@@ -25,7 +22,7 @@ class Serializer
      *
      * @return bool|float|int|string
      */
-    public function serialize($object)
+    public function serialize(object $object): float|bool|int|string
     {
         return $this->serializer->serialize($object, 'json');
     }
@@ -35,7 +32,7 @@ class Serializer
      *
      * @return object
      */
-    public function deserialize($serializedObject)
+    public function deserialize(string $serializedObject): object
     {
         return $this->serializer->denormalize($serializedObject, 'json');
     }

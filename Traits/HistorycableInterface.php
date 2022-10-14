@@ -6,8 +6,5 @@ use Atournayre\Bundle\HistoriqueBundle\Interfaces\History as HistoryInterface;
 
 interface HistorycableInterface
 {
-    /**
-     * @return self
-     */
-    public function addHistory(HistoryInterface $history);
+    public function addHistory(HistoryInterface $history): self;
 }
