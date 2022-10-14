@@ -3,9 +3,9 @@
 This bundle add History management for entities.
 
 ## Requirements
-Symfony ``^2.8``
+Symfony ``^5.4``
 
-PHP ``^5.6``
+PHP ``^8.1``
 
 ## Install
 ### Composer
@@ -55,6 +55,7 @@ Add **History** entity to your application.
 namespace App\Model;
 
 use Atournayre\Bundle\HistoriqueBundle\Entity\History as BaseHistory;
+use Atournayre\Bundle\HistoriqueBundle\EventSubscriber\HistoryEventSubscriber;
 use Atournayre\Bundle\HistoriqueBundle\Interfaces\History as HistoryInterface;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -62,6 +63,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\EntityListeners({"Atournayre\Bundle\HistoriqueBundle\EventSubscriber\HistoryEventSubscriber"})
  */
+#[ORM\Entity]
+#[ORM\EntityListeners([HistoryEventSubscriber::class])]
 class History extends BaseHistory implements HistoryInterface
 {
     // You don't need to extend this entity.
@@ -73,7 +76,7 @@ You can add **History** to existing entities or add it to new ones.
 
 To add history to an entity, it needs to implements ``HistorycableInterface``.
 
-Then use ``HistorycableTrait`` to adda relation between **YourEntity** and **History**. 
+Then use ``HistorycableTrait`` to add a relation between **YourEntity** and **History**. 
 ```php
 <?php
 
