@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 class HistoriqueExtension extends Extension
 {
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'atournayre_historique';
     }
@@ -18,7 +18,7 @@ class HistoriqueExtension extends Extension
     /**
      * @inheritDoc
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
