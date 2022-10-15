@@ -19,11 +19,11 @@ class Serializer
     }
 
     /**
-     * @param object $object
+     * @param array $object
      *
      * @return bool|float|int|string
      */
-    public function serialize(object $object): float|bool|int|string
+    public function serialize(array $object): float|bool|int|string
     {
         return $this->serializer->serialize($object, 'json');
     }
