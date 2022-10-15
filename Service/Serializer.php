@@ -4,6 +4,7 @@ namespace Atournayre\Bundle\HistoriqueBundle\Service;
 
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class Serializer
@@ -31,6 +32,7 @@ class Serializer
      * @param string $serializedObject
      *
      * @return object
+     * @throws ExceptionInterface
      */
     public function deserialize(string $serializedObject): object
     {

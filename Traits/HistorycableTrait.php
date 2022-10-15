@@ -12,8 +12,8 @@ trait HistorycableTrait
 {
     #[ORM\ManyToMany(targetEntity: HistoryInterface::class, cascade: ['persist'])]
     #[ORM\JoinTable(
-        inverseJoinColumns: [new ORM\JoinColumn(name: "id")],
         joinColumns: [new ORM\JoinColumn(name: "id")],
+        inverseJoinColumns: [new ORM\JoinColumn(name: "id")],
     )]
     private array|Collection $histories;
 
@@ -53,7 +53,7 @@ trait HistorycableTrait
      *
      * @return array
      */
-    public function getAllPreviousValues($sort = Criteria::DESC): array
+    public function getAllPreviousValues(string $sort = Criteria::DESC): array
     {
         $previousValues = [];
         foreach ($this->histories->toArray() as $history) {
@@ -68,7 +68,7 @@ trait HistorycableTrait
      *
      * @return array
      */
-    public function getAllPreviousValuesByName(string $fieldName, $sort = Criteria::DESC): array
+    public function getAllPreviousValuesByName(string $fieldName, string $sort = Criteria::DESC): array
     {
         $previousValues = [];
         foreach ($this->histories->toArray() as $history) {
@@ -105,7 +105,7 @@ trait HistorycableTrait
      *
      * @return array
      */
-    private function sortPreviousValues(array $previousValues, $sort = Criteria::DESC): array
+    private function sortPreviousValues(array $previousValues, string $sort = Criteria::DESC): array
     {
         $sort === Criteria::DESC
             ? krsort($previousValues)

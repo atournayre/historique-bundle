@@ -11,29 +11,17 @@ use Doctrine\ORM\Events;
 
 class HistoryEventSubscriber implements EventSubscriber
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-    /**
-     * @var HistoryFactory
-     */
-    private $historyFactory;
-
-    /**
-     * @param EntityManagerInterface $entityManager
-     * @param HistoryFactory         $historyFactory
-     */
-    public function __construct(EntityManagerInterface $entityManager, HistoryFactory $historyFactory)
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly HistoryFactory $historyFactory,
+    )
     {
-        $this->entityManager = $entityManager;
-        $this->historyFactory = $historyFactory;
     }
 
     /**
      * @inheritDoc
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             Events::onFlush,
@@ -45,7 +33,7 @@ class HistoryEventSubscriber implements EventSubscriber
      */
     public function onFlush(OnFlushEventArgs $eventArgs)
     {
-        $em = $eventArgs->getEntityManager();
+        $em = $eventArgs->getObjectManager();
         $uow = $em->getUnitOfWork();
 
         /** @var HistorycableInterface $entity */
@@ -55,7 +43,7 @@ class HistoryEventSubscriber implements EventSubscriber
             }
             $changeSet = $uow->getEntityChangeSet($entity);
 
-            $history = $this->historyFactory->creer($changeSet);
+            $history = $this->historyFactory->create($changeSet);
             $this->entityManager->persist($history);
 
             $entity->addHistory($history);
@@ -70,7 +58,7 @@ class HistoryEventSubscriber implements EventSubscriber
      *
      * @return bool
      */
-    private function supports($entity)
+    private function supports(object $entity): bool
     {
         return $entity instanceof HistorycableInterface;
     }

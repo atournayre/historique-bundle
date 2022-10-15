@@ -26,7 +26,7 @@ class HistoryFactory
      *
      * @return HistoryInterface
      */
-    public function creer(array $changeSet): HistoryInterface
+    public function create(array $changeSet): HistoryInterface
     {
         $entityChangeSet = $this->serializer->serialize($changeSet);
 
