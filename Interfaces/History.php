@@ -10,7 +10,7 @@ interface History
 
     public function getEntityChangeSet(): string;
 
-    public function setEntityChangeSet(string $entityChangeSet): string;
+    public function setEntityChangeSet(string $entityChangeSet): self;
 
     public function getEntityChangeSetAsArray(): array;
 

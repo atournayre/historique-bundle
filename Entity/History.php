@@ -83,7 +83,7 @@ class History implements HistoryInterface
      *
      * @return $this
      */
-    public function setEntityChangeSet(string $entityChangeSet): static
+    public function setEntityChangeSet(string $entityChangeSet): self
     {
         $this->entityChangeSet = $entityChangeSet;
         return $this;
