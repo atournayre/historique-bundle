@@ -9,6 +9,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class HistoryEventSubscriber implements EventSubscriber
 {
@@ -16,9 +17,10 @@ class HistoryEventSubscriber implements EventSubscriber
 
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
+        private readonly TokenStorageInterface $tokenStorage,
     )
     {
-        $this->factoryLoader = new FactoryLoader();
+        $this->factoryLoader = new FactoryLoader($tokenStorage);
     }
 
     /**

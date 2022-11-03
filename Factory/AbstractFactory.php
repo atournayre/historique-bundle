@@ -8,11 +8,13 @@ use Atournayre\Bundle\HistoriqueBundle\Config\LoaderConfig;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractFactory
 {
     public function __construct(
+        private readonly TokenStorageInterface $tokenStorage,
         protected Collection $changeSet = new ArrayCollection(),
     )
     {
@@ -21,13 +23,13 @@ abstract class AbstractFactory
     /**
      * @throws EmptyChangeSetException
      */
-    protected function createHistory(?UserInterface $user = null): History
+    protected function createHistory(): History
     {
         $loaderConfig = new LoaderConfig();
         $historyClassName = $loaderConfig->getHistoryClassName();
 
         return (new $historyClassName())
-            ->setBy($user)
+            ->setBy($this->tokenStorage->getToken()?->getUser())
             ->setAt(new DateTime())
             ->setEntityChangeSet($this->convertChangeSetToString());
     }

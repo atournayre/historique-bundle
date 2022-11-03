@@ -5,9 +5,16 @@ namespace Atournayre\Bundle\HistoriqueBundle\Factory;
 use Atournayre\Bundle\HistoriqueBundle\Entity\History;
 use Atournayre\Bundle\HistoriqueBundle\Config\LoaderConfig;
 use Atournayre\Bundle\HistoriqueBundle\Exception\EmptyChangeSetException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class FactoryLoader
 {
+    public function __construct(
+        private readonly TokenStorageInterface $tokenStorage,
+    )
+    {
+    }
+
     /**
      * @throws EmptyChangeSetException Each factory may throw this exception.
      */
@@ -26,7 +33,7 @@ class FactoryLoader
             throw new \LogicException(sprintf('%s do not exists.', $factoryClass));
         }
 
-        $factory = new $factoryClass();
+        $factory = new $factoryClass($this->tokenStorage);
 
         if (!$factory instanceof AbstractFactory) {
             throw new \LogicException(sprintf('%s must extends from %s.', $factoryClass, AbstractFactory::class));

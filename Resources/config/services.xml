@@ -15,7 +15,7 @@
 
         <service id="atournayre.history_bundle.history_event_subscriber" class="Atournayre\Bundle\HistoriqueBundle\EventSubscriber\HistoryEventSubscriber">
             <argument id="doctrine.orm.entity_manager" type="service"/>
-            <argument type="service" id="atournayre.history_bundle.history_factory"/>
+            <argument type="service" id="security.token_storage"/>
             <tag name="doctrine.event_listener" event="onFlush"/>
         </service>
     </services>
