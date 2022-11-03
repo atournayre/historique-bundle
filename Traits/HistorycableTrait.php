@@ -78,10 +78,12 @@ trait HistorycableTrait
     }
 
     /**
-     * @return HistoryInterface
+     * @return HistoryInterface|array
      */
-    public function getLastValues(): HistoryInterface
+    public function getLastValues(): HistoryInterface|array
     {
+        if ($this->histories->isEmpty()) return [];
+
         return $this->histories
             ->last()
             ->getPreviousValues();
@@ -94,6 +96,8 @@ trait HistorycableTrait
      */
     public function getLastValuesByName(string $fieldName): mixed
     {
+        if ($this->histories->isEmpty()) return null;
+
         return $this->histories
             ->last()
             ->getPreviousValueByName($fieldName);

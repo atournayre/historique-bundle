@@ -18,14 +18,14 @@ class History implements HistoryInterface
     protected int $id;
 
     #[ORM\Column(type: 'text', nullable: false)]
-    protected string $entityChangeSet;
+    protected ?string $entityChangeSet;
 
     #[ORM\Column(type: 'datetime', nullable: false)]
     protected DateTimeInterface $at;
 
     #[ORM\ManyToOne(targetEntity: UserInterface::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    protected UserInterface $by;
+    #[ORM\JoinColumn(nullable: true)]
+    protected ?UserInterface $by;
 
     /**
      * @return int
@@ -79,11 +79,11 @@ class History implements HistoryInterface
     }
 
     /**
-     * @param string $entityChangeSet
+     * @param string|null $entityChangeSet
      *
      * @return $this
      */
-    public function setEntityChangeSet(string $entityChangeSet): self
+    public function setEntityChangeSet(?string $entityChangeSet): self
     {
         $this->entityChangeSet = $entityChangeSet;
         return $this;
@@ -109,19 +109,19 @@ class History implements HistoryInterface
     }
 
     /**
-     * @return UserInterface
+     * @return UserInterface|null
      */
-    public function getBy(): UserInterface
+    public function getBy(): ?UserInterface
     {
         return $this->by;
     }
 
     /**
-     * @param UserInterface $by
+     * @param UserInterface|null $by
      *
      * @return $this
      */
-    public function setBy(UserInterface $by): static
+    public function setBy(?UserInterface $by): static
     {
         $this->by = $by;
         return $this;
