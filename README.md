@@ -69,8 +69,11 @@ class History extends BaseHistory implements HistoryInterface
 ```
 
 ## Usage
+1. Create/Update entity
+2. Create a factory for the entity you want to log
+3. Map your entity to the factory
 
-### Entities
+### Create/Update entity
 You can add **History** to existing entities or add it to new ones.
 
 To add history to an entity, it needs to implements ``HistorycableInterface``.
@@ -90,7 +93,7 @@ class YourEntity implements HistorycableInterface
 }
 ```
 
-### Factories
+### Create a factory for the entity you want to log
 Factories are where magic happens.
 
 You have to create a Factory that implements how you want to store the history.
@@ -106,7 +109,7 @@ use Atournayre\Bundle\HistoriqueBundle\Exception\EmptyChangeSetException;
 use Atournayre\Bundle\HistoriqueBundle\Factory\AbstractFactory;
 use Atournayre\Bundle\HistoriqueBundle\Interfaces\History;use Symfony\Component\Security\Core\User\UserInterface;
 
-class YourEntityFactory extends AbstractFactory
+class YourEntityHistoryFactory extends AbstractFactory
 {
     /**
      * @throws EmptyChangeSetException
@@ -137,7 +140,7 @@ class YourEntityFactory extends AbstractFactory
 
 ```
 
-Map Entity to Factory
+### Map your entity to the factory
 
 Once you factory is created, you need to add a mapping to the config file, so the listener can automatically get the right factory for the right entity.
 ```yaml
@@ -150,37 +153,14 @@ With this, you can locate entities and factories anywhere in your project.
 
 ### How to get values ?
 
-> ⚠️ Since version 3
-> 
-> This methods can be obsolete.
-> 
-> Update coming soon. Feel free to create issues.
-
 ```php
 use Doctrine\Common\Collections\Criteria;
 
 $yourEntity = ...
 
 // Get all the history (the most recent first) 
-$allPreviousValues = $yourEntity->getAllPreviousValues();
-$allPreviousValues = $yourEntity->getAllPreviousValues(Criteria::DESC);
-
-// Get all the history (the most ancient first) 
-$allPreviousValues = $yourEntity->getAllPreviousValues(Criteria::ASC);
-
-// Assuming YourEntity as "title" property
-// Get all the previous values from the history only for "title" property (the most recent first) 
-$allPreviousTitles = $yourEntity->getAllPreviousValuesByName('title');
-$allPreviousTitles = $yourEntity->getAllPreviousValuesByName('title', Criteria::DESC);
-
-// Get all the previous values from the history only for "title" property (the most ancient first) 
-$allPreviousTitles = $yourEntity->getAllPreviousValuesByName('title', Criteria::ASC);
-
-// Get the last changes
-$lastChanges = $yourEntity->getLastValues();
-
-// Get the last "title"
-$lastTitle = $yourEntity->getLastValuesByName('title');
+$allPreviousValues = $yourEntity->getEntityChangeSet();
+$allPreviousValues = $yourEntity->getEntityChangeSetAsArray();
 ```
 
 ## Contributing

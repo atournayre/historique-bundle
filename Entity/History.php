@@ -53,6 +53,7 @@ class History implements HistoryInterface
 
     /**
      * @return array
+     * @deprecated
      */
     public function getPreviousValues(): array
     {
@@ -65,6 +66,9 @@ class History implements HistoryInterface
         return $this->decoratePreviousValues($previousValues, $timestamp);
     }
 
+    /**
+     * @deprecated
+     */
     public function getPreviousValueByName(string $fieldName): array
     {
         $entityChangeSetAsArray = $this->getEntityChangeSetAsArray();
@@ -132,6 +136,7 @@ class History implements HistoryInterface
      * @param int|null $timestamp
      *
      * @return array
+     * @deprecated
      */
     private function decoratePreviousValues(array $previousValues, int $timestamp = null): array
     {

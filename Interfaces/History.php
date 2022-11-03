@@ -14,12 +14,16 @@ interface History
 
     public function getEntityChangeSetAsArray(): array;
 
+    /**
+     * @deprecated
+     */
     public function getPreviousValues(): array;
 
     /**
      * @param string $fieldName The name of the property to retrieve in previous value.
      *
      * @return array
+     * @deprecated
      */
     public function getPreviousValueByName(string $fieldName): array;
 
