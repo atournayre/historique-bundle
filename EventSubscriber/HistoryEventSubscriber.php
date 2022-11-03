@@ -2,8 +2,9 @@
 
 namespace Atournayre\Bundle\HistoriqueBundle\EventSubscriber;
 
-use Atournayre\Bundle\HistoriqueBundle\Factory\HistoryFactory;
+use Atournayre\Bundle\HistoriqueBundle\Exception\EmptyChangeSetException;
 use Atournayre\Bundle\HistoriqueBundle\Traits\HistorycableInterface;
+use Atournayre\Bundle\HistoriqueBundle\Factory\FactoryLoader;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
@@ -11,11 +12,13 @@ use Doctrine\ORM\Events;
 
 class HistoryEventSubscriber implements EventSubscriber
 {
+    private FactoryLoader $factoryLoader;
+
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly HistoryFactory $historyFactory,
     )
     {
+        $this->factoryLoader = new FactoryLoader();
     }
 
     /**
@@ -43,10 +46,14 @@ class HistoryEventSubscriber implements EventSubscriber
             }
             $changeSet = $uow->getEntityChangeSet($entity);
 
-            $history = $this->historyFactory->create($changeSet);
-            $this->entityManager->persist($history);
+            try {
+                $history = ($this->factoryLoader)($entity, $changeSet);
+                $this->entityManager->persist($history);
 
-            $entity->addHistory($history);
+                $entity->addHistory($history);
+            } catch (EmptyChangeSetException $exception) {
+                continue;
+            }
             $this->entityManager->persist($entity);
         }
 
