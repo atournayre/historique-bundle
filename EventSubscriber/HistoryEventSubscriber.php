@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Exception;
 
 class HistoryEventSubscriber implements EventSubscriber
 {
@@ -50,11 +51,16 @@ class HistoryEventSubscriber implements EventSubscriber
 
             try {
                 $history = ($this->factoryLoader)($entity, $changeSet);
+
+                if (is_null($history)) continue;
+
                 $this->entityManager->persist($history);
 
                 $entity->addHistory($history);
             } catch (EmptyChangeSetException $exception) {
                 continue;
+            } catch (Exception $exception) {
+                throw $exception;
             }
             $this->entityManager->persist($entity);
         }
