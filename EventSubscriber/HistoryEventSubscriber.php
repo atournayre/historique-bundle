@@ -59,6 +59,8 @@ class HistoryEventSubscriber implements EventSubscriber
                 $entity->addHistory($history);
             } catch (EmptyChangeSetException $exception) {
                 continue;
+            } catch (Exception $exception) {
+                throw $exception;
             }
             $this->entityManager->persist($entity);
         }
