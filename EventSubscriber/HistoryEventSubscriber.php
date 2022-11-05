@@ -24,9 +24,6 @@ class HistoryEventSubscriber implements EventSubscriber
         $this->factoryLoader = new FactoryLoader($tokenStorage);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getSubscribedEvents(): array
     {
         return [
@@ -35,8 +32,6 @@ class HistoryEventSubscriber implements EventSubscriber
     }
 
     /**
-     * @param OnFlushEventArgs $eventArgs
-     *
      * @throws HistoriqueException
      */
     public function onFlush(OnFlushEventArgs $eventArgs)
@@ -51,19 +46,14 @@ class HistoryEventSubscriber implements EventSubscriber
             }
             $changeSet = $uow->getEntityChangeSet($entity);
 
-            try {
-                $history = ($this->factoryLoader)($entity, $changeSet);
+            $history = ($this->factoryLoader)($entity, $changeSet);
 
-                if (is_null($history)) continue;
+            if (is_null($history)) continue;
 
-                $this->entityManager->persist($history);
+            $this->entityManager->persist($history);
 
-                $entity->addHistory($history);
-            } catch (HistoriqueException $exception) {
-                continue;
-            } catch (Exception $exception) {
-                throw $exception;
-            }
+            $entity->addHistory($history);
+
             $this->entityManager->persist($entity);
         }
 
