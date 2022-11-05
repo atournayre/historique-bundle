@@ -12,7 +12,7 @@ final class HistoryDTOFactory
      */
     public static function createFromChangeSet(string $title, array $changeSet, /* string|callable */ $closure): HistoryDTO
     {
-        if (!isset($changeSet[0], $changeSet[1])) {
+        if ('01' != implode('', array_keys($changeSet))) {
             throw HistoriqueException::incorrectChangeSet($changeSet);
         }
 
