@@ -2,7 +2,7 @@
 
 namespace Atournayre\Bundle\HistoriqueBundle\EventSubscriber;
 
-use Atournayre\Bundle\HistoriqueBundle\Exception\EmptyChangeSetException;
+use Atournayre\Bundle\HistoriqueBundle\Exception\HistoriqueException;
 use Atournayre\Bundle\HistoriqueBundle\Traits\HistorycableInterface;
 use Atournayre\Bundle\HistoriqueBundle\Factory\FactoryLoader;
 use Doctrine\Common\EventSubscriber;
@@ -36,6 +36,8 @@ class HistoryEventSubscriber implements EventSubscriber
 
     /**
      * @param OnFlushEventArgs $eventArgs
+     *
+     * @throws HistoriqueException
      */
     public function onFlush(OnFlushEventArgs $eventArgs)
     {
@@ -57,7 +59,7 @@ class HistoryEventSubscriber implements EventSubscriber
                 $this->entityManager->persist($history);
 
                 $entity->addHistory($history);
-            } catch (EmptyChangeSetException $exception) {
+            } catch (HistoriqueException $exception) {
                 continue;
             } catch (Exception $exception) {
                 throw $exception;

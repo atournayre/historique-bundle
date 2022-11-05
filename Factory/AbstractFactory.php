@@ -2,14 +2,13 @@
 
 namespace Atournayre\Bundle\HistoriqueBundle\Factory;
 
-use Atournayre\Bundle\HistoriqueBundle\Exception\EmptyChangeSetException;
+use Atournayre\Bundle\HistoriqueBundle\Exception\HistoriqueException;
 use Atournayre\Bundle\HistoriqueBundle\Interfaces\History;
 use Atournayre\Bundle\HistoriqueBundle\Config\LoaderConfig;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractFactory
 {
@@ -21,7 +20,7 @@ abstract class AbstractFactory
     }
 
     /**
-     * @throws EmptyChangeSetException
+     * @throws HistoriqueException
      */
     protected function createHistory(): History
     {
@@ -35,7 +34,7 @@ abstract class AbstractFactory
     }
 
     /**
-     * @throws EmptyChangeSetException
+     * @throws HistoriqueException
      */
     private function convertChangeSetToString(): ?string
     {
@@ -45,7 +44,7 @@ abstract class AbstractFactory
 
         if ($this->changeSet instanceof Collection) {
             if ($this->changeSet->isEmpty()) {
-                throw new EmptyChangeSetException();
+                throw HistoriqueException::emptyChangeSet();
             }
 
             return json_encode($this->changeSet->toArray());
