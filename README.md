@@ -107,7 +107,8 @@ use App\Entity\Utilisateur;
 use Atournayre\Bundle\HistoriqueBundle\DTO\HistoryDTO;
 use Atournayre\Bundle\HistoriqueBundle\Exception\HistoriqueException;
 use Atournayre\Bundle\HistoriqueBundle\Factory\AbstractFactory;
-use Atournayre\Bundle\HistoriqueBundle\Interfaces\History;use Symfony\Component\Security\Core\User\UserInterface;
+use Atournayre\Bundle\HistoriqueBundle\Interfaces\History;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class YourEntityHistoryFactory extends AbstractFactory
 {
