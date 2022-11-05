@@ -105,14 +105,14 @@ namespace App\Factory;
 
 use App\Entity\Utilisateur;
 use Atournayre\Bundle\HistoriqueBundle\DTO\HistoryDTO;
-use Atournayre\Bundle\HistoriqueBundle\Exception\EmptyChangeSetException;
+use Atournayre\Bundle\HistoriqueBundle\Exception\HistoriqueException;
 use Atournayre\Bundle\HistoriqueBundle\Factory\AbstractFactory;
 use Atournayre\Bundle\HistoriqueBundle\Interfaces\History;use Symfony\Component\Security\Core\User\UserInterface;
 
 class YourEntityHistoryFactory extends AbstractFactory
 {
     /**
-     * @throws EmptyChangeSetException
+     * @throws HistoriqueException
      */
     public function create(array $changeSet): History
     {
@@ -130,10 +130,10 @@ class YourEntityHistoryFactory extends AbstractFactory
 
         if (is_null($currentChangeSet)) return;
 
-        $this->changeSet->set('user', new HistoryDTO(
+        $this->changeSet->set('user', HistoryDTOFactory::createFromChangeSet(
             'New username',
-            $currentChangeSet[0]?->getUsername(),
-            $currentChangeSet[1]?->getUsername(),
+            $currentChangeSet,
+            fn (Utilisateur $utilisateur) => $utilisateur?->getUsername()
         ));
     }
 }

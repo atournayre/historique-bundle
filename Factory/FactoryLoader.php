@@ -4,7 +4,7 @@ namespace Atournayre\Bundle\HistoriqueBundle\Factory;
 
 use Atournayre\Bundle\HistoriqueBundle\Entity\History;
 use Atournayre\Bundle\HistoriqueBundle\Config\LoaderConfig;
-use Atournayre\Bundle\HistoriqueBundle\Exception\EmptyChangeSetException;
+use Atournayre\Bundle\HistoriqueBundle\Exception\HistoriqueException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class FactoryLoader
@@ -16,7 +16,7 @@ class FactoryLoader
     }
 
     /**
-     * @throws EmptyChangeSetException Each factory may throw this exception.
+     * @throws HistoriqueException Each factory may throw this exception.
      */
     public function __invoke(object $object, array $changeSet): ?History
     {
