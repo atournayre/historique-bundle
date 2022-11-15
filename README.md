@@ -115,7 +115,7 @@ class YourEntityHistoryFactory extends AbstractFactory
     /**
      * @throws HistoriqueException
      */
-    public function create(array $changeSet): History
+    public function create(array $changeSet): ?History
     {
         // Create how many methods you want for each node in your change set.
         $this->user($changeSet);
