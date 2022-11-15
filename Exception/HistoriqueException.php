@@ -6,11 +6,6 @@ use Exception;
 
 class HistoriqueException extends Exception
 {
-    public static function emptyChangeSet(): self
-    {
-        return new static('ChangeSet is empty.');
-    }
-
     public static function incorrectChangeSet(array $changeSet): self
     {
         return new static(

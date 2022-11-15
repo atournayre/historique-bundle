@@ -22,8 +22,12 @@ abstract class AbstractFactory
     /**
      * @throws HistoriqueException
      */
-    protected function createHistory(): History
+    protected function createHistory(): ?History
     {
+        $convertChangeSetToString = $this->convertChangeSetToString();
+
+        if (is_null($convertChangeSetToString)) return null;
+
         $loaderConfig = new LoaderConfig();
         $historyClassName = $loaderConfig->getHistoryClassName();
 
@@ -43,9 +47,7 @@ abstract class AbstractFactory
         if (is_string($this->changeSet)) return $this->changeSet;
 
         if ($this->changeSet instanceof Collection) {
-            if ($this->changeSet->isEmpty()) {
-                throw HistoriqueException::emptyChangeSet();
-            }
+            if ($this->changeSet->isEmpty()) return null;
 
             return json_encode($this->changeSet->toArray());
         }
@@ -53,5 +55,5 @@ abstract class AbstractFactory
         return json_encode($this->changeSet);
     }
 
-    abstract public function create(array $changeSet);
+    abstract public function create(array $changeSet): ?History;
 }
