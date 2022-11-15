@@ -22,8 +22,12 @@ abstract class AbstractFactory
     /**
      * @throws HistoriqueException
      */
-    protected function createHistory(): History
+    protected function createHistory(): ?History
     {
+        $convertChangeSetToString = $this->convertChangeSetToString();
+
+        if (is_null($convertChangeSetToString)) return null;
+
         $loaderConfig = new LoaderConfig();
         $historyClassName = $loaderConfig->getHistoryClassName();
 
