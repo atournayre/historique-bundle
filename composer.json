@@ -22,7 +22,7 @@
         "symfony/security-bundle": "5.4.*",
         "doctrine/common": "^3.1",
         "symfony/serializer": "5.4.*",
-        "symfony/yaml": "^5.4"
+        "symfony/yaml": "^6.0"
     },
     "extra": {
         "symfony": {
